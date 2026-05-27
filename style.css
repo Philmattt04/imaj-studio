@@ -1218,6 +1218,29 @@ input[type="color"] {
 }
 .btn-icon-sm:hover { background: var(--hover); }
 
+/* ── Props advanced toggle ──────────────────────────────── */
+.props-adv-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mid);
+  padding: 10px 0 4px;
+  text-align: left;
+  margin-top: 6px;
+  transition: color .15s;
+  font-family: inherit;
+}
+.props-adv-toggle:hover { color: var(--text); }
+.props-adv-toggle[aria-expanded="true"] .ai-chevron { transform: rotate(180deg); }
+#text-advanced-body { padding-top: 2px; }
+
 /* ── Properties view ────────────────────────────────────── */
 .props-header {
   display: flex;

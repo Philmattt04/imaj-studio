@@ -541,28 +541,34 @@
               <input type="color" id="text-color" value="#000000">
               <input type="text"  id="text-color-hex" value="#000000" class="hex-input" maxlength="7">
             </div>
-            <div class="field-row">
-              <label>Line Ht.</label>
-              <input type="range" id="text-line-height" min="0.5" max="3" step="0.05" value="1.2">
-              <span class="val-tag" id="text-line-height-val">1.2</span>
-            </div>
-            <div class="field-row">
-              <label>Spacing</label>
-              <input type="range" id="text-char-spacing" min="-200" max="1000" step="10" value="0">
-              <span class="val-tag" id="text-char-spacing-val">0</span>
-            </div>
-            <div class="field-row">
-              <label>Shadow</label>
-              <label class="toggle-sw">
-                <input type="checkbox" id="text-shadow">
-                <span class="sw-track"></span>
-              </label>
-            </div>
-            <div id="text-shadow-opts" style="display:none">
-              <div class="field-row"><label>Color</label><input type="color" id="text-shadow-color" value="#000000"></div>
-              <div class="field-row"><label>Blur</label><input type="range" id="text-shadow-blur" min="0" max="60" value="10"><span class="val-tag" id="text-shadow-blur-val">10</span></div>
-              <div class="field-row"><label>Offset X</label><input type="range" id="text-shadow-ox" min="-40" max="40" value="4"><span class="val-tag" id="text-shadow-ox-val">4</span></div>
-              <div class="field-row"><label>Offset Y</label><input type="range" id="text-shadow-oy" min="-40" max="40" value="4"><span class="val-tag" id="text-shadow-oy-val">4</span></div>
+            <button class="props-adv-toggle" id="text-advanced-toggle" aria-expanded="false">
+              <svg class="ai-chevron" width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 4l3.5 3.5L9 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Advanced
+            </button>
+            <div id="text-advanced-body" style="display:none">
+              <div class="field-row">
+                <label>Line Ht.</label>
+                <input type="range" id="text-line-height" min="0.5" max="3" step="0.05" value="1.2">
+                <span class="val-tag" id="text-line-height-val">1.2</span>
+              </div>
+              <div class="field-row">
+                <label>Spacing</label>
+                <input type="range" id="text-char-spacing" min="-200" max="1000" step="10" value="0">
+                <span class="val-tag" id="text-char-spacing-val">0</span>
+              </div>
+              <div class="field-row">
+                <label>Shadow</label>
+                <label class="toggle-sw">
+                  <input type="checkbox" id="text-shadow">
+                  <span class="sw-track"></span>
+                </label>
+              </div>
+              <div id="text-shadow-opts" style="display:none">
+                <div class="field-row"><label>Color</label><input type="color" id="text-shadow-color" value="#000000"></div>
+                <div class="field-row"><label>Blur</label><input type="range" id="text-shadow-blur" min="0" max="60" value="10"><span class="val-tag" id="text-shadow-blur-val">10</span></div>
+                <div class="field-row"><label>Offset X</label><input type="range" id="text-shadow-ox" min="-40" max="40" value="4"><span class="val-tag" id="text-shadow-ox-val">4</span></div>
+                <div class="field-row"><label>Offset Y</label><input type="range" id="text-shadow-oy" min="-40" max="40" value="4"><span class="val-tag" id="text-shadow-oy-val">4</span></div>
+              </div>
             </div>
           </div>
 

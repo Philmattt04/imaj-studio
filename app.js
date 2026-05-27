@@ -397,6 +397,17 @@ function onSelection() {
   document.getElementById('image-props').style.display  = t === 'image' ? 'block' : 'none';
   document.getElementById('corner-radius-row').style.display = t === 'rect' ? 'flex' : 'none';
 
+  // For text: common-props is revealed via the Advanced toggle; for other types always show it
+  document.getElementById('common-props').style.display = t === 'text' ? 'none' : 'block';
+
+  // Collapse the text advanced section whenever a new element is selected
+  if (t === 'text') {
+    const advBtn  = document.getElementById('text-advanced-toggle');
+    const advBody = document.getElementById('text-advanced-body');
+    if (advBtn)  advBtn.setAttribute('aria-expanded', 'false');
+    if (advBody) advBody.style.display = 'none';
+  }
+
   populateProps(obj, t);
   updateLayers();
 }
@@ -458,6 +469,17 @@ function populateProps(obj, t) {
 }
 
 function setupProperties() {
+  // Text advanced toggle — reveals Line Ht / Spacing / Shadow + Opacity / Rotation / order
+  on('text-advanced-toggle', 'click', () => {
+    const btn    = document.getElementById('text-advanced-toggle');
+    const body   = document.getElementById('text-advanced-body');
+    const common = document.getElementById('common-props');
+    const open   = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    body.style.display   = open ? 'none' : 'block';
+    common.style.display = open ? 'none' : 'block';
+  });
+
   // Text
   on('text-content', 'input', () => {
     const o = activeObj();
