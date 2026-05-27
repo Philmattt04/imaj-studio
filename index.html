@@ -503,56 +503,88 @@
 
           <!-- Text -->
           <div id="text-props" style="display:none">
+
             <div class="field-col">
               <label>Content</label>
               <textarea id="text-content" rows="2"></textarea>
             </div>
-            <div class="field-row">
-              <label>Font</label>
-              <select id="text-font">
-                <option>Arial</option>
-                <option>Helvetica</option>
-                <option>Georgia</option>
-                <option>Times New Roman</option>
-                <option>Courier New</option>
-                <option>Roboto</option>
-                <option>Montserrat</option>
-                <option>Playfair Display</option>
-                <option>Lato</option>
-                <option>Oswald</option>
-              </select>
+
+            <!-- Font picker -->
+            <p class="section-label" style="margin-top:12px;margin-bottom:6px">Font</p>
+            <select id="text-font" style="display:none">
+              <option>Arial</option><option>Helvetica</option><option>Georgia</option>
+              <option>Times New Roman</option><option>Courier New</option><option>Roboto</option>
+              <option>Montserrat</option><option>Playfair Display</option><option>Lato</option>
+              <option>Oswald</option>
+            </select>
+            <div class="font-chip-grid" id="font-chip-grid">
+              <button class="font-chip active" data-font="Arial"            style="font-family:Arial,sans-serif">Arial</button>
+              <button class="font-chip"        data-font="Helvetica"        style="font-family:Helvetica,sans-serif">Helvetica</button>
+              <button class="font-chip"        data-font="Roboto"           style="font-family:Roboto,sans-serif">Roboto</button>
+              <button class="font-chip"        data-font="Montserrat"       style="font-family:Montserrat,sans-serif">Montserrat</button>
+              <button class="font-chip"        data-font="Lato"             style="font-family:Lato,sans-serif">Lato</button>
+              <button class="font-chip"        data-font="Oswald"           style="font-family:Oswald,sans-serif">Oswald</button>
+              <button class="font-chip"        data-font="Playfair Display" style="font-family:'Playfair Display',serif">Playfair Display</button>
+              <button class="font-chip"        data-font="Georgia"          style="font-family:Georgia,serif">Georgia</button>
+              <button class="font-chip"        data-font="Times New Roman"  style="font-family:'Times New Roman',serif">Times New Roman</button>
+              <button class="font-chip"        data-font="Courier New"      style="font-family:'Courier New',monospace">Courier New</button>
             </div>
-            <div class="field-row">
+
+            <!-- Size -->
+            <div class="txt-size-row">
               <label>Size</label>
+              <input type="range" id="text-size-slider" min="8" max="200" value="48">
               <input type="number" id="text-size" min="4" max="800" value="40">
               <span class="unit">px</span>
             </div>
-            <div class="btn-cluster">
-              <button class="style-btn" id="text-bold"><b>B</b></button>
-              <button class="style-btn" id="text-italic"><i>I</i></button>
-              <button class="style-btn" id="text-underline"><u>U</u></button>
-              <div class="cluster-sep"></div>
-              <button class="style-btn" id="text-align-left"   title="Align left">&#8676;</button>
-              <button class="style-btn" id="text-align-center" title="Align center">&#8596;</button>
-              <button class="style-btn" id="text-align-right"  title="Align right">&#8677;</button>
+
+            <!-- Style + Alignment -->
+            <div class="txt-format-row">
+              <button class="fmt-btn" id="text-bold"         title="Bold"><b>B</b></button>
+              <button class="fmt-btn" id="text-italic"       title="Italic"><i>I</i></button>
+              <button class="fmt-btn" id="text-underline"    title="Underline"><u>U</u></button>
+              <div class="fmt-sep"></div>
+              <button class="fmt-btn" id="text-align-left"   title="Align left">
+                <svg width="14" height="11" viewBox="0 0 14 11" fill="none"><line x1="1" y1="1.5" x2="13" y2="1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="1" y1="5.5" x2="8"  y2="5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="1" y1="9.5" x2="10" y2="9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </button>
+              <button class="fmt-btn" id="text-align-center" title="Align center">
+                <svg width="14" height="11" viewBox="0 0 14 11" fill="none"><line x1="1"   y1="1.5" x2="13" y2="1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3"   y1="5.5" x2="11" y2="5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="2"   y1="9.5" x2="12" y2="9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </button>
+              <button class="fmt-btn" id="text-align-right"  title="Align right">
+                <svg width="14" height="11" viewBox="0 0 14 11" fill="none"><line x1="1"   y1="1.5" x2="13" y2="1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="6"   y1="5.5" x2="13" y2="5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3"   y1="9.5" x2="13" y2="9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </button>
             </div>
-            <div class="field-row">
+
+            <!-- Color -->
+            <div class="field-row" style="margin-top:6px">
               <label>Color</label>
               <input type="color" id="text-color" value="#000000">
               <input type="text"  id="text-color-hex" value="#000000" class="hex-input" maxlength="7">
             </div>
+            <div class="txt-color-swatches">
+              <button class="txt-swatch" data-color="#000000" style="background:#000000"          title="Black"></button>
+              <button class="txt-swatch" data-color="#ffffff" style="background:#ffffff"          title="White"></button>
+              <button class="txt-swatch" data-color="#6c63ff" style="background:#6c63ff"          title="Purple"></button>
+              <button class="txt-swatch" data-color="#ef4444" style="background:#ef4444"          title="Red"></button>
+              <button class="txt-swatch" data-color="#3b82f6" style="background:#3b82f6"          title="Blue"></button>
+              <button class="txt-swatch" data-color="#22c55e" style="background:#22c55e"          title="Green"></button>
+              <button class="txt-swatch" data-color="#f59e0b" style="background:#f59e0b"          title="Amber"></button>
+              <button class="txt-swatch" data-color="#ec4899" style="background:#ec4899"          title="Pink"></button>
+            </div>
+
+            <!-- Advanced -->
             <button class="props-adv-toggle" id="text-advanced-toggle" aria-expanded="false">
               <svg class="ai-chevron" width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 4l3.5 3.5L9 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               Advanced
             </button>
             <div id="text-advanced-body" style="display:none">
               <div class="field-row">
-                <label>Line Ht.</label>
+                <label>Line Height</label>
                 <input type="range" id="text-line-height" min="0.5" max="3" step="0.05" value="1.2">
                 <span class="val-tag" id="text-line-height-val">1.2</span>
               </div>
               <div class="field-row">
-                <label>Spacing</label>
+                <label>Letter Spacing</label>
                 <input type="range" id="text-char-spacing" min="-200" max="1000" step="10" value="0">
                 <span class="val-tag" id="text-char-spacing-val">0</span>
               </div>
@@ -570,6 +602,7 @@
                 <div class="field-row"><label>Offset Y</label><input type="range" id="text-shadow-oy" min="-40" max="40" value="4"><span class="val-tag" id="text-shadow-oy-val">4</span></div>
               </div>
             </div>
+
           </div>
 
           <!-- Shape -->

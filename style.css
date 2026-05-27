@@ -1218,6 +1218,93 @@ input[type="color"] {
 }
 .btn-icon-sm:hover { background: var(--hover); }
 
+/* ── Text panel: font chips ─────────────────────────────── */
+.font-chip-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+.font-chip {
+  padding: 8px 10px;
+  background: var(--ctrl);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text);
+  text-align: left;
+  transition: all 0.13s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+.font-chip:hover { border-color: var(--accent3); background: var(--hover); color: var(--accent); }
+.font-chip.active { border-color: var(--accent); background: var(--accent2); color: var(--accent); }
+
+/* ── Text panel: size row ───────────────────────────────── */
+.txt-size-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.txt-size-row label {
+  width: 32px;
+  flex-shrink: 0;
+  font-size: 11.5px;
+  color: var(--mid);
+  font-weight: 500;
+}
+.txt-size-row input[type="range"] { flex: 1; accent-color: var(--accent); }
+.txt-size-row input[type="number"] { width: 50px; flex: none; text-align: center; }
+
+/* ── Text panel: format row (B/I/U + align) ─────────────── */
+.txt-format-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.fmt-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  background: var(--ctrl);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  color: var(--mid);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.13s;
+}
+.fmt-btn:hover { border-color: var(--accent3); color: var(--accent); background: var(--hover); }
+.fmt-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.fmt-sep { width: 1px; height: 36px; background: var(--border); margin: 0 2px; flex-shrink: 0; }
+
+/* ── Text panel: color swatches ─────────────────────────── */
+.txt-color-swatches {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+.txt-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.12s, border-color 0.12s, box-shadow 0.12s;
+  outline: none;
+}
+.txt-swatch:hover { transform: scale(1.2); border-color: var(--accent); }
+.txt-swatch.active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent2); }
+
 /* ── Props advanced toggle ──────────────────────────────── */
 .props-adv-toggle {
   display: flex;

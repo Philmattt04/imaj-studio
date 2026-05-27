@@ -421,8 +421,14 @@ function populateProps(obj, t) {
 
   if (t === 'text') {
     set('text-content', obj.text ?? '');
-    set('text-font', obj.fontFamily ?? 'Arial');
-    set('text-size', obj.fontSize ?? 40);
+    const font = obj.fontFamily ?? 'Arial';
+    set('text-font', font);
+    document.querySelectorAll('#font-chip-grid .font-chip').forEach(c => {
+      c.classList.toggle('active', c.dataset.font === font);
+    });
+    const sz = obj.fontSize ?? 40;
+    set('text-size', sz);
+    set('text-size-slider', Math.min(sz, 200));
     setTxt('text-line-height-val', (obj.lineHeight ?? 1.2).toFixed(2));
     set('text-line-height', obj.lineHeight ?? 1.2);
     setTxt('text-char-spacing-val', obj.charSpacing ?? 0);
@@ -438,6 +444,9 @@ function populateProps(obj, t) {
     const fc = typeof obj.fill === 'string' ? obj.fill : '#000000';
     safeColor('text-color', fc);
     set('text-color-hex', fc);
+    document.querySelectorAll('.txt-swatch').forEach(s => {
+      s.classList.toggle('active', s.dataset.color.toLowerCase() === fc.toLowerCase());
+    });
 
     const hasShadow = !!obj.shadow;
     document.getElementById('text-shadow').checked = hasShadow;
@@ -469,6 +478,35 @@ function populateProps(obj, t) {
 }
 
 function setupProperties() {
+  // Font chips
+  document.querySelectorAll('#font-chip-grid .font-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('#font-chip-grid .font-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      set('text-font', chip.dataset.font);
+      upd({ fontFamily: chip.dataset.font });
+    });
+  });
+
+  // Size slider ↔ number input
+  on('text-size-slider', 'input', () => {
+    const v = +val('text-size-slider');
+    set('text-size', v);
+    upd({ fontSize: v });
+  });
+
+  // Text color swatches
+  document.querySelectorAll('.txt-swatch').forEach(sw => {
+    sw.addEventListener('click', () => {
+      const c = sw.dataset.color;
+      document.querySelectorAll('.txt-swatch').forEach(s => s.classList.remove('active'));
+      sw.classList.add('active');
+      safeColor('text-color', c);
+      set('text-color-hex', c);
+      upd({ fill: c });
+    });
+  });
+
   // Text advanced toggle — reveals Line Ht / Spacing / Shadow + Opacity / Rotation / order
   on('text-advanced-toggle', 'click', () => {
     const btn    = document.getElementById('text-advanced-toggle');
@@ -485,8 +523,12 @@ function setupProperties() {
     const o = activeObj();
     if (o && o instanceof fabric.IText) { o.set('text', val('text-content')); canvas.renderAll(); }
   });
-  on('text-font',  'change', () => upd({ fontFamily: val('text-font') }));
-  on('text-size',  'input',  () => upd({ fontSize: +val('text-size') }));
+  on('text-font', 'change', () => upd({ fontFamily: val('text-font') }));
+  on('text-size', 'input', () => {
+    const v = +val('text-size');
+    set('text-size-slider', Math.min(v, 200));
+    upd({ fontSize: v });
+  });
 
   toggleStyle('text-bold',      'fontWeight', 'bold',   'normal');
   toggleStyle('text-italic',    'fontStyle',  'italic',  'normal');
