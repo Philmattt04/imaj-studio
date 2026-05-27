@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupFilename();
   setupHistory();
   setupTransparentBg();
+  setupBgTemplates();
 
   canvas.on('selection:created', onSelection);
   canvas.on('selection:updated', onSelection);
@@ -116,8 +117,10 @@ function setupBackground() {
       tab.classList.add('active');
       document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
       document.getElementById(`bg-${tab.dataset.tab}-panel`).classList.add('active');
-      bgState.type = tab.dataset.tab;
-      if (bgState.type !== 'image' || bgState.imageData) reapplyBackground();
+      if (tab.dataset.tab !== 'templates') {
+        bgState.type = tab.dataset.tab;
+        if (bgState.type !== 'image' || bgState.imageData) reapplyBackground();
+      }
     });
   });
 
@@ -251,13 +254,13 @@ function reapplyBackground() {
 
 // ── Elements ───────────────────────────────────────────────
 function setupElements() {
-  document.getElementById('add-text').addEventListener('click', addText);
-  document.getElementById('add-rect').addEventListener('click', addRect);
-  document.getElementById('add-circle').addEventListener('click', addCircle);
-  document.getElementById('add-triangle').addEventListener('click', addTriangle);
-  document.getElementById('add-line').addEventListener('click', addLine);
+  on('add-text',     'click', addText);
+  on('add-rect',     'click', addRect);
+  on('add-circle',   'click', addCircle);
+  on('add-triangle', 'click', addTriangle);
+  on('add-line',     'click', addLine);
 
-  document.getElementById('add-image').addEventListener('click', () => {
+  on('add-image', 'click', () => {
     document.getElementById('image-file').click();
   });
   document.getElementById('image-file').addEventListener('change', e => {
@@ -1504,6 +1507,48 @@ function toggleStyle(btnId, prop, onVal, offVal) {
     upd({ [prop]: next });
     tog(btnId, next === onVal);
   });
+}
+
+// ── Background Templates ───────────────────────────────────
+const BG_TEMPLATES = [
+  { name: 'Midnight', gradType: 'linear', color1: '#1a1a2e', color2: '#4a4e69', angle: 135 },
+  { name: 'Sunset',   gradType: 'linear', color1: '#f7567c', color2: '#ffbe0b', angle: 135 },
+  { name: 'Ocean',    gradType: 'linear', color1: '#0077b6', color2: '#00b4d8', angle: 180 },
+  { name: 'Forest',   gradType: 'linear', color1: '#134e5e', color2: '#71b280', angle: 135 },
+  { name: 'Lavender', gradType: 'linear', color1: '#7b2ff7', color2: '#f107a3', angle: 135 },
+  { name: 'Golden',   gradType: 'linear', color1: '#f7971e', color2: '#ffd200', angle: 135 },
+  { name: 'Aurora',   gradType: 'linear', color1: '#00d2ff', color2: '#3a47d5', angle: 135 },
+  { name: 'Blush',    gradType: 'linear', color1: '#fccb90', color2: '#d57eeb', angle: 135 },
+  { name: 'Ember',    gradType: 'linear', color1: '#e96c1e', color2: '#c0392b', angle: 135 },
+  { name: 'Mint',     gradType: 'linear', color1: '#11998e', color2: '#38ef7d', angle: 135 },
+];
+
+function setupBgTemplates() {
+  const grid = document.getElementById('template-grid');
+  if (!grid) return;
+
+  BG_TEMPLATES.forEach(tpl => {
+    const btn = document.createElement('button');
+    btn.className = 'bg-template-btn';
+    btn.title = tpl.name;
+    btn.style.background = `linear-gradient(${tpl.angle}deg, ${tpl.color1}, ${tpl.color2})`;
+    btn.innerHTML = `<span class="bg-tpl-name">${tpl.name}</span>`;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.bg-template-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyBgTemplate(tpl);
+    });
+    grid.appendChild(btn);
+  });
+}
+
+function applyBgTemplate(tpl) {
+  bgState.gradient.type   = tpl.gradType || 'linear';
+  bgState.gradient.color1 = tpl.color1;
+  bgState.gradient.color2 = tpl.color2;
+  bgState.gradient.angle  = tpl.angle ?? 135;
+  bgState.type = 'gradient';
+  applyGradientBg();
 }
 
 // ── Transparent background ─────────────────────────────────
