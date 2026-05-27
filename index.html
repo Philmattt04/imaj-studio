@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Imaj Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Montserrat:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ── Header toolbar ──────────────────────────────────── -->
+<header class="app-header">
+
+  <div class="logo">
+    <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
+      <rect x="1" y="1" width="20" height="20" rx="4" fill="#6c63ff" opacity="0.15" stroke="#6c63ff" stroke-width="1.5"/>
+      <circle cx="7" cy="8" r="2.3" fill="#6c63ff" opacity="0.8"/>
+      <path d="M1 15l5-4.5 4 3.5 3-3 8 5.5" stroke="#6c63ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="logo-text">Imaj Studio</span>
+  </div>
+
+  <div class="vsep"></div>
+
+  <div class="hdr-filename">
+    <svg class="hdr-filename-icon" width="13" height="13" viewBox="0 0 13 13" fill="none">
+      <path d="M2 10.5V8L8.5 1.5a1.2 1.2 0 011.7 0l1.3 1.3a1.2 1.2 0 010 1.7L5 11H2.5L2 10.5z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <input type="text" id="hdr-filename-input" value="my-image" spellcheck="false" aria-label="Image name" title="Click to rename">
+  </div>
+
+  <div class="vsep"></div>
+
+  <!-- Canvas size controls -->
+  <div class="hdr-size">
+    <input type="number" id="canvas-width"  value="800" min="1" max="8000" title="Canvas width">
+    <span class="size-x">×</span>
+    <input type="number" id="canvas-height" value="600" min="1" max="8000" title="Canvas height">
+    <select id="canvas-preset" title="Size presets">
+      <option value="">Presets</option>
+      <option value="800x600">800 × 600</option>
+      <option value="1080x1080">1:1 Square</option>
+      <option value="1920x1080">16:9 HD</option>
+      <option value="1080x1920">9:16 Story</option>
+      <option value="1500x500">Twitter Header</option>
+      <option value="1200x628">OG / Facebook</option>
+      <option value="2480x3508">A4 Portrait</option>
+    </select>
+  </div>
+
+  <div class="vsep"></div>
+
+  <!-- Element tool buttons -->
+  <div class="toolbar" role="toolbar" aria-label="Add elements">
+    <button class="tool-btn" id="add-text" title="Add Text (T)">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><text x="1" y="13" font-family="Arial" font-size="13" font-weight="bold" fill="currentColor">T</text></svg>
+      Text
+    </button>
+    <button class="tool-btn" id="add-rect" title="Add Rectangle">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="4" width="13" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+      Rect
+    </button>
+    <button class="tool-btn" id="add-circle" title="Add Circle">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.5"/></svg>
+      Circle
+    </button>
+    <button class="tool-btn" id="add-triangle" title="Add Triangle">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L15 14H1L8 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      Triangle
+    </button>
+    <button class="tool-btn" id="add-line" title="Add Line">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><line x1="1" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Line
+    </button>
+    <button class="tool-btn" id="add-image" title="Add Image">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="14" height="12" rx="1.5" stroke="currentColor" stroke-width="1.3"/><circle cx="5.5" cy="6.5" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 11l4-3.5 3.5 3 2.5-2.5 5 4" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+      Image
+      <input type="file" id="image-file" accept="image/*" hidden>
+    </button>
+    <div class="tool-sep"></div>
+    <button class="tool-btn tool-ai" id="ai-tool-btn" title="AI Image Generator">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 5H13L9.5 7.5 10.8 12 7 9.5 3.2 12 4.5 7.5 1 5H5.5L7 1Z" fill="currentColor"/></svg>
+      AI Generate
+    </button>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- Zoom -->
+  <div class="hdr-zoom">
+    <button id="zoom-out" title="Zoom out">−</button>
+    <span id="zoom-level">100%</span>
+    <button id="zoom-in" title="Zoom in">+</button>
+    <button id="zoom-fit" title="Fit to view">Fit</button>
+  </div>
+
+  <div class="vsep"></div>
+
+  <div class="export-hdr-wrap">
+    <button class="btn-export-hdr" id="export-btn-header">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7M4 5.5l2.5 2.5L9 5.5M1 9.5v1.5a1 1 0 001 1h9a1 1 0 001-1V9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Export
+      <svg class="export-chevron" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="export-hdr-menu" id="export-hdr-menu" aria-hidden="true">
+      <button class="export-hdr-item" id="export-hdr-download">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7M4 5.5l2.5 2.5L9 5.5M1 9.5v1.5a1 1 0 001 1h9a1 1 0 001-1V9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download
+      </button>
+      <button class="export-hdr-item" id="export-hdr-share">
+        <svg width="13" height="13" viewBox="0 0 15 15" fill="none"><circle cx="12" cy="3" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="3" cy="7.5" r="1.8" stroke="currentColor" stroke-width="1.3"/><path d="M10.3 3.8L4.7 6.7M4.7 8.3l5.6 2.9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Share
+      </button>
+      <div class="export-hdr-sep"></div>
+      <button class="export-hdr-item" id="export-hdr-copy">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 4V3A2 2 0 012 1h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Copy to Clipboard
+      </button>
+    </div>
+  </div>
+
+</header>
+
+<!-- ── App body ─────────────────────────────────────────── -->
+<div class="app-body">
+
+  <!-- Canvas workspace -->
+  <main class="canvas-area" id="canvas-area">
+    <div class="canvas-scroll-space" id="canvas-scroll-space">
+      <div class="canvas-wrapper" id="canvas-wrapper">
+        <canvas id="canvas"></canvas>
+      </div>
+    </div>
+  </main>
+
+  <!-- Right sidebar / mobile bottom sheet ─────────────── -->
+  <aside class="sidebar-right">
+    <!-- Mobile drag handle (hidden on desktop) -->
+    <div class="sheet-drag-handle" id="sheet-drag-handle" aria-hidden="true"></div>
+
+    <!-- TOP HALF: switches between tabs-view and props-view -->
+    <div class="panel-top">
+
+      <!-- ── TABS VIEW (default, when nothing selected) ── -->
+      <div id="tabs-view">
+
+        <div class="ptab-bar">
+          <button class="ptab active" data-tab="setup">
+            <span class="ptab-full">Setup</span><span class="ptab-short">Setup</span>
+          </button>
+          <button class="ptab" data-tab="bg">
+            <span class="ptab-full">Background</span><span class="ptab-short">BG</span>
+          </button>
+          <button class="ptab ptab-ai" data-tab="ai">
+            <span class="ptab-full">✦ AI</span><span class="ptab-short">✦ AI</span>
+          </button>
+          <button class="ptab" data-tab="export">
+            <span class="ptab-full">Export</span><span class="ptab-short">Export</span>
+          </button>
+        </div>
+
+        <!-- Setup tab -->
+        <div class="ptab-pane active" data-tab="setup">
+          <div class="pane-body">
+            <p class="section-label">Size presets</p>
+            <div class="preset-grid">
+              <button class="preset-btn" data-w="800"  data-h="600">800×600</button>
+              <button class="preset-btn" data-w="1080" data-h="1080">1:1 Square</button>
+              <button class="preset-btn" data-w="1920" data-h="1080">16:9 HD</button>
+              <button class="preset-btn" data-w="1080" data-h="1920">9:16 Story</button>
+              <button class="preset-btn" data-w="1500" data-h="500">Twitter Hdr</button>
+              <button class="preset-btn" data-w="1200" data-h="628">OG Image</button>
+            </div>
+            <p class="setup-hint">Edit width × height in the top toolbar, or pick a preset above.</p>
+          </div>
+        </div>
+
+        <!-- Background tab -->
+        <div class="ptab-pane" data-tab="bg">
+          <div class="pane-body">
+
+            <div class="sub-tab-row" id="bg-tabs">
+              <button class="sub-tab active" data-tab="color">Color</button>
+              <button class="sub-tab" data-tab="gradient">Gradient</button>
+              <button class="sub-tab" data-tab="image">Image</button>
+            </div>
+
+            <!-- Color -->
+            <div id="bg-color-panel" class="tab-pane active">
+              <div class="color-pick-row">
+                <input type="color" id="bg-color" value="#ffffff">
+                <input type="text"  id="bg-color-hex" value="#ffffff" class="hex-input" maxlength="7">
+              </div>
+              <div class="quick-swatches" id="bg-quick-colors">
+                <button class="swatch" style="background:#ffffff" data-color="#ffffff"></button>
+                <button class="swatch" style="background:#000000" data-color="#000000"></button>
+                <button class="swatch" style="background:#f8f9fa" data-color="#f8f9fa"></button>
+                <button class="swatch" style="background:#1a1a2e" data-color="#1a1a2e"></button>
+                <button class="swatch" style="background:#e63946" data-color="#e63946"></button>
+                <button class="swatch" style="background:#457b9d" data-color="#457b9d"></button>
+                <button class="swatch" style="background:#2a9d8f" data-color="#2a9d8f"></button>
+                <button class="swatch" style="background:#f4a261" data-color="#f4a261"></button>
+              </div>
+            </div>
+
+            <!-- Gradient -->
+            <div id="bg-gradient-panel" class="tab-pane">
+              <div class="field-row">
+                <label>Type</label>
+                <select id="gradient-type">
+                  <option value="linear">Linear</option>
+                  <option value="radial">Radial</option>
+                </select>
+              </div>
+              <div class="grad-stops">
+                <div class="grad-stop">
+                  <span>From</span>
+                  <input type="color" id="gradient-color1" value="#6c63ff">
+                  <input type="text"  id="gradient-hex1"   value="#6c63ff" class="hex-input" maxlength="7">
+                </div>
+                <div class="grad-stop">
+                  <span>To</span>
+                  <input type="color" id="gradient-color2" value="#ff6584">
+                  <input type="text"  id="gradient-hex2"   value="#ff6584" class="hex-input" maxlength="7">
+                </div>
+              </div>
+              <div class="field-row" id="gradient-angle-row">
+                <label>Angle</label>
+                <input type="range" id="gradient-angle" min="0" max="360" value="135">
+                <span class="val-tag" id="gradient-angle-val">135°</span>
+              </div>
+              <button class="btn-outline w-full" id="apply-gradient">Apply Gradient</button>
+            </div>
+
+            <!-- Image -->
+            <div id="bg-image-panel" class="tab-pane">
+              <div class="drop-zone" id="bg-upload-zone">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <p>Click or drag image</p>
+                <input type="file" id="bg-image-file" accept="image/*" hidden>
+              </div>
+              <div class="field-row" id="bg-fit-row" style="display:none">
+                <label>Fit</label>
+                <select id="bg-image-fit">
+                  <option value="cover">Cover</option>
+                  <option value="contain">Contain</option>
+                  <option value="stretch">Stretch</option>
+                </select>
+              </div>
+              <button class="btn-danger w-full" id="remove-bg-image" style="display:none">Remove image</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- AI tab -->
+        <div class="ptab-pane" data-tab="ai">
+          <div class="pane-body">
+
+            <div class="field-col">
+              <label>Prompt</label>
+              <textarea id="ai-prompt" rows="3" placeholder="A golden sunset over mountains with dramatic clouds…"></textarea>
+            </div>
+
+            <!-- 10 Styles -->
+            <p class="section-label" style="margin-top:10px">Style</p>
+            <div class="style-chips" id="style-chips">
+              <button class="chip active" data-style="">None</button>
+              <button class="chip" data-style="photorealistic, ultra detailed, 8k photography, sharp focus">Realistic</button>
+              <button class="chip" data-style="anime style, vibrant colors, studio ghibli, clean lines">Anime</button>
+              <button class="chip" data-style="3d render, octane render, blender, studio lighting">3D</button>
+              <button class="chip" data-style="watercolor painting, soft colors, wet on wet, artistic">Watercolor</button>
+              <button class="chip" data-style="pencil sketch, black and white, cross hatching, hand drawn">Sketch</button>
+              <button class="chip" data-style="oil painting, impasto, classical art, chiaroscuro">Oil Paint</button>
+              <button class="chip" data-style="cinematic, film grain, dramatic lighting, movie still">Cinematic</button>
+              <button class="chip" data-style="pixel art, 16-bit, retro game sprite, clean pixels">Pixel Art</button>
+              <button class="chip" data-style="neon colors, cyberpunk, glowing lights, dark futuristic city">Neon</button>
+            </div>
+
+            <!-- 10 Backgrounds -->
+            <p class="section-label" style="margin-top:10px">Background</p>
+            <div class="style-chips" id="bg-preset-chips">
+              <button class="chip active" data-bg="">None</button>
+              <button class="chip" data-bg="clean white studio background, professional photography lighting, minimal">Studio</button>
+              <button class="chip" data-bg="natural outdoor forest setting, lush greenery, soft diffused sunlight">Nature</button>
+              <button class="chip" data-bg="city street urban environment, buildings, street lights, bokeh background">Urban</button>
+              <button class="chip" data-bg="outer space background, stars, galaxy, nebula, deep dark cosmos">Space</button>
+              <button class="chip" data-bg="abstract colorful geometric shapes, vibrant patterns, artistic backdrop">Abstract</button>
+              <button class="chip" data-bg="soft bokeh blur background, shallow depth of field, blurred glowing lights">Bokeh</button>
+              <button class="chip" data-bg="dramatic mountain landscape, misty peaks, rocky valley, fog">Mountains</button>
+              <button class="chip" data-bg="tropical ocean beach background, turquoise waves, sandy shore, horizon">Ocean</button>
+              <button class="chip" data-bg="golden hour sunset sky, warm orange pink purple gradient, horizon glow">Sunset</button>
+            </div>
+
+            <!-- Text in image -->
+            <div class="field-col ai-text-field" style="margin-top:10px">
+              <label>
+                Text <span class="opt">(optional)</span>
+              </label>
+              <input type="text" id="ai-text-overlay" placeholder="e.g. Hello World, Sale 50%, your brand name…" maxlength="80">
+
+              <div class="ai-text-extras" id="ai-text-extras">
+
+                <!-- Render mode toggle -->
+                <p class="ai-mini-label">How to render</p>
+                <div class="ai-text-mode">
+                  <button class="ai-mode-btn active" data-mode="layer" id="ai-mode-layer">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="13" height="13" rx="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 8h7M5.5 5.5h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                    <span class="ai-mode-title">Canvas Layer</span>
+                    <span class="ai-mode-tag good">Recommended</span>
+                  </button>
+                  <button class="ai-mode-btn" data-mode="prompt" id="ai-mode-prompt">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7 1L8.5 5H13L9.5 7.5 10.8 12 7 9.5 3.2 12 4.5 7.5 1 5H5.5L7 1Z" fill="currentColor" opacity=".7"/></svg>
+                    <span class="ai-mode-title">Bake into Image</span>
+                    <span class="ai-mode-tag warn">Unreliable</span>
+                  </button>
+                </div>
+
+                <!-- Tips (one shown at a time) -->
+                <p class="ai-text-tip good" id="ai-mode-tip-layer">
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.2"/><path d="M4 6l1.5 1.5L8.5 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Crisp, editable text added as a canvas layer when you place the image.
+                </p>
+                <p class="ai-text-tip warn" id="ai-mode-tip-prompt" style="display:none">
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.2"/><path d="M6 4v3M6 8.5v.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                  AI may misspell or garble the text. Best for decorative effects only.
+                </p>
+
+                <!-- 10 Font Styles -->
+                <p class="ai-mini-label">Font Style</p>
+                <div class="ai-font-chips" id="ai-font-chips">
+                  <button class="chip active" data-fontstyle="bold">Bold</button>
+                  <button class="chip" data-fontstyle="outlined">Outlined</button>
+                  <button class="chip" data-fontstyle="handwritten">Handwritten</button>
+                  <button class="chip" data-fontstyle="minimal">Minimal</button>
+                  <button class="chip" data-fontstyle="serif">Serif</button>
+                  <button class="chip" data-fontstyle="script">Script</button>
+                  <button class="chip" data-fontstyle="graffiti">Graffiti</button>
+                  <button class="chip" data-fontstyle="neon">Neon Glow</button>
+                  <button class="chip" data-fontstyle="gothic">Gothic</button>
+                  <button class="chip" data-fontstyle="retro">Retro</button>
+                </div>
+
+                <!-- 10 Font Colors -->
+                <p class="ai-mini-label">Font Color</p>
+                <div class="ai-color-swatches" id="ai-color-swatches">
+                  <button class="ai-swatch active" data-color="#ffffff" style="background:#ffffff" title="White"></button>
+                  <button class="ai-swatch" data-color="#000000" style="background:#000000" title="Black"></button>
+                  <button class="ai-swatch" data-color="#f5c518" style="background:#f5c518" title="Gold"></button>
+                  <button class="ai-swatch" data-color="#e63946" style="background:#e63946" title="Red"></button>
+                  <button class="ai-swatch" data-color="#1d70b8" style="background:#1d70b8" title="Blue"></button>
+                  <button class="ai-swatch" data-color="#2ecc71" style="background:#2ecc71" title="Green"></button>
+                  <button class="ai-swatch" data-color="#9b59b6" style="background:#9b59b6" title="Purple"></button>
+                  <button class="ai-swatch" data-color="#f39c12" style="background:#f39c12" title="Orange"></button>
+                  <button class="ai-swatch" data-color="#e91e8c" style="background:#e91e8c" title="Pink"></button>
+                  <button class="ai-swatch" data-color="#c0c0c0" style="background:#c0c0c0" title="Silver"></button>
+                </div>
+
+                <!-- Position -->
+                <div class="ai-text-pos-row">
+                  <span class="ai-mini-label" style="margin:0">Position</span>
+                  <select id="ai-text-position">
+                    <option value="center">Center</option>
+                    <option value="top">Top</option>
+                    <option value="bottom">Bottom</option>
+                  </select>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Advanced collapsible -->
+            <button class="ai-advanced-toggle" id="ai-advanced-toggle" aria-expanded="false">
+              <svg class="ai-chevron" width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 4l3.5 3.5L9 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Advanced settings
+            </button>
+            <div class="ai-advanced-body" id="ai-advanced-body">
+              <div class="field-col">
+                <label>Negative prompt <span class="opt">(optional)</span></label>
+                <textarea id="ai-negative" rows="2" placeholder="blurry, low quality, distorted…"></textarea>
+              </div>
+              <div class="field-row">
+                <label>Size</label>
+                <select id="ai-size">
+                  <option value="canvas">Canvas size</option>
+                  <option value="512x512">512 × 512</option>
+                  <option value="768x512">768 × 512</option>
+                  <option value="512x768">512 × 768</option>
+                  <option value="1024x1024">1024 × 1024</option>
+                </select>
+              </div>
+              <div class="field-row">
+                <label>Model</label>
+                <select id="ai-model">
+                  <option value="flux">Flux (default)</option>
+                  <option value="flux-realism">Flux Realism</option>
+                  <option value="flux-anime">Flux Anime</option>
+                  <option value="flux-3d">Flux 3D</option>
+                  <option value="turbo">Turbo (fast)</option>
+                </select>
+              </div>
+              <div class="field-row">
+                <label>Seed</label>
+                <input type="number" id="ai-seed" placeholder="Random" min="0" max="999999" style="width:80px;flex:none">
+                <button class="btn-icon-sm" id="ai-rand-seed" title="Random seed">🎲</button>
+              </div>
+            </div>
+
+            <button class="btn-ai-gen" id="ai-generate-btn">
+              <svg id="ai-icon" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 5H13L9.5 7.5 10.8 12 7 9.5 3.2 12 4.5 7.5 1 5H5.5L7 1Z" fill="currentColor"/></svg>
+              <span id="ai-btn-text">Generate Image</span>
+              <span id="ai-spinner" class="ai-spinner" style="display:none"></span>
+            </button>
+
+            <!-- Panel thumbnail: shown after generation, tapping re-opens modal -->
+            <div id="ai-result" style="display:none">
+              <button class="ai-thumb-btn" id="ai-view-result" title="View result">
+                <img id="ai-preview-img" src="" alt="Generated" class="ai-thumb-img">
+                <div class="ai-thumb-overlay">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" fill="rgba(255,255,255,0.2)"/><path d="M6 9l2.5 2.5L13 7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span>View &amp; Edit</span>
+                </div>
+              </button>
+            </div>
+
+            <div id="ai-error" class="ai-error-msg" style="display:none"></div>
+
+          </div>
+        </div>
+
+        <!-- Export tab -->
+        <div class="ptab-pane" data-tab="export">
+          <div class="pane-body">
+            <div class="field-row">
+              <label>Quality</label>
+              <input type="range" id="export-quality" min="10" max="100" value="92">
+              <span class="val-tag" id="quality-val">92%</span>
+            </div>
+            <div class="field-row">
+              <label>Scale</label>
+              <select id="export-scale">
+                <option value="1">1× Original</option>
+                <option value="2">2× Retina</option>
+                <option value="0.5">0.5× Half</option>
+              </select>
+            </div>
+            <div class="field-col">
+              <label>Filename</label>
+              <input type="text" id="export-filename" value="my-image" class="text-input">
+            </div>
+            <div class="export-action-row">
+              <button class="btn-primary" id="export-btn-bottom">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7M4 5.5l2.5 2.5L9 5.5M1 9.5v1.5a1 1 0 001 1h9a1 1 0 001-1V9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Download
+              </button>
+              <button class="btn-outline" id="share-btn">
+                <svg width="13" height="13" viewBox="0 0 15 15" fill="none"><circle cx="12" cy="3" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="3" cy="7.5" r="1.8" stroke="currentColor" stroke-width="1.3"/><path d="M10.3 3.8L4.7 6.7M4.7 8.3l5.6 2.9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                Share
+              </button>
+            </div>
+            <button class="btn-outline w-full" id="copy-clipboard-btn" style="margin-top:8px">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 4V3A2 2 0 012 1h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              Copy to Clipboard
+            </button>
+
+            <div class="export-options-sep"></div>
+
+            <div class="field-row">
+              <label for="transparent-bg-toggle">Transparent bg <span class="opt-tag">PNG</span></label>
+              <label class="toggle-sw">
+                <input type="checkbox" id="transparent-bg-toggle" checked>
+                <span class="sw-track"></span>
+              </label>
+            </div>
+
+            <div class="field-row">
+              <label for="history-toggle">Save history</label>
+              <label class="toggle-sw">
+                <input type="checkbox" id="history-toggle">
+                <span class="sw-track"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- History panel — visible only when history is on -->
+          <div id="history-panel" style="display:none">
+            <div class="history-header">
+              <span>Recent exports</span>
+              <button id="history-clear-btn">Clear all</button>
+            </div>
+            <div id="history-grid" class="history-grid"></div>
+          </div>
+        </div>
+
+      </div><!-- /tabs-view -->
+
+      <!-- ── PROPERTIES VIEW (shown when element is selected) ── -->
+      <div id="props-view" style="display:none">
+
+        <div class="props-header">
+          <button class="back-btn" id="props-back">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L4 6l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Canvas
+          </button>
+          <span class="type-chip" id="prop-type-badge"></span>
+        </div>
+
+        <div class="props-body">
+
+          <!-- Text -->
+          <div id="text-props" style="display:none">
+            <div class="field-col">
+              <label>Content</label>
+              <textarea id="text-content" rows="2"></textarea>
+            </div>
+            <div class="field-row">
+              <label>Font</label>
+              <select id="text-font">
+                <option>Arial</option>
+                <option>Helvetica</option>
+                <option>Georgia</option>
+                <option>Times New Roman</option>
+                <option>Courier New</option>
+                <option>Roboto</option>
+                <option>Montserrat</option>
+                <option>Playfair Display</option>
+                <option>Lato</option>
+                <option>Oswald</option>
+              </select>
+            </div>
+            <div class="field-row">
+              <label>Size</label>
+              <input type="number" id="text-size" min="4" max="800" value="40">
+              <span class="unit">px</span>
+            </div>
+            <div class="btn-cluster">
+              <button class="style-btn" id="text-bold"><b>B</b></button>
+              <button class="style-btn" id="text-italic"><i>I</i></button>
+              <button class="style-btn" id="text-underline"><u>U</u></button>
+              <div class="cluster-sep"></div>
+              <button class="style-btn" id="text-align-left"   title="Align left">&#8676;</button>
+              <button class="style-btn" id="text-align-center" title="Align center">&#8596;</button>
+              <button class="style-btn" id="text-align-right"  title="Align right">&#8677;</button>
+            </div>
+            <div class="field-row">
+              <label>Color</label>
+              <input type="color" id="text-color" value="#000000">
+              <input type="text"  id="text-color-hex" value="#000000" class="hex-input" maxlength="7">
+            </div>
+            <div class="field-row">
+              <label>Line Ht.</label>
+              <input type="range" id="text-line-height" min="0.5" max="3" step="0.05" value="1.2">
+              <span class="val-tag" id="text-line-height-val">1.2</span>
+            </div>
+            <div class="field-row">
+              <label>Spacing</label>
+              <input type="range" id="text-char-spacing" min="-200" max="1000" step="10" value="0">
+              <span class="val-tag" id="text-char-spacing-val">0</span>
+            </div>
+            <div class="field-row">
+              <label>Shadow</label>
+              <label class="toggle-sw">
+                <input type="checkbox" id="text-shadow">
+                <span class="sw-track"></span>
+              </label>
+            </div>
+            <div id="text-shadow-opts" style="display:none">
+              <div class="field-row"><label>Color</label><input type="color" id="text-shadow-color" value="#000000"></div>
+              <div class="field-row"><label>Blur</label><input type="range" id="text-shadow-blur" min="0" max="60" value="10"><span class="val-tag" id="text-shadow-blur-val">10</span></div>
+              <div class="field-row"><label>Offset X</label><input type="range" id="text-shadow-ox" min="-40" max="40" value="4"><span class="val-tag" id="text-shadow-ox-val">4</span></div>
+              <div class="field-row"><label>Offset Y</label><input type="range" id="text-shadow-oy" min="-40" max="40" value="4"><span class="val-tag" id="text-shadow-oy-val">4</span></div>
+            </div>
+          </div>
+
+          <!-- Shape -->
+          <div id="shape-props" style="display:none">
+            <div class="field-row">
+              <label>Fill</label>
+              <label class="toggle-sw"><input type="checkbox" id="shape-fill-on" checked><span class="sw-track"></span></label>
+              <input type="color" id="shape-fill"     value="#6c63ff">
+              <input type="text"  id="shape-fill-hex" value="#6c63ff" class="hex-input" maxlength="7">
+            </div>
+            <div class="field-row">
+              <label>Stroke</label>
+              <label class="toggle-sw"><input type="checkbox" id="shape-stroke-on"><span class="sw-track"></span></label>
+              <input type="color" id="shape-stroke" value="#000000">
+            </div>
+            <div class="field-row" id="stroke-width-row" style="display:none">
+              <label>Width</label>
+              <input type="range" id="shape-stroke-width" min="1" max="60" value="2">
+              <span class="val-tag" id="stroke-width-val">2</span>
+            </div>
+            <div class="field-row" id="corner-radius-row" style="display:none">
+              <label>Radius</label>
+              <input type="range" id="shape-radius" min="0" max="300" value="0">
+              <span class="val-tag" id="shape-radius-val">0</span>
+            </div>
+          </div>
+
+          <!-- Image filters -->
+          <div id="image-props" style="display:none">
+            <div class="field-row"><label>Brightness</label><input type="range" id="img-brightness" min="-1" max="1" step="0.01" value="0"><span class="val-tag" id="img-brightness-val">0</span></div>
+            <div class="field-row"><label>Contrast</label><input type="range" id="img-contrast"   min="-1" max="1" step="0.01" value="0"><span class="val-tag" id="img-contrast-val">0</span></div>
+            <div class="field-row"><label>Saturate</label><input type="range" id="img-saturation" min="-1" max="1" step="0.01" value="0"><span class="val-tag" id="img-saturation-val">0</span></div>
+          </div>
+
+          <!-- Common -->
+          <div id="common-props">
+            <div class="prop-divider"></div>
+            <div class="field-row">
+              <label>Opacity</label>
+              <input type="range" id="elem-opacity" min="0" max="100" value="100">
+              <span class="val-tag" id="elem-opacity-val">100%</span>
+            </div>
+            <div class="field-row">
+              <label>Rotation</label>
+              <input type="range" id="elem-rotation" min="-180" max="180" value="0">
+              <span class="val-tag" id="elem-rotation-val">0°</span>
+            </div>
+            <div class="order-row">
+              <button class="ord-btn" id="bring-front"   title="Bring to front">↑↑</button>
+              <button class="ord-btn" id="bring-forward" title="Bring forward">↑</button>
+              <button class="ord-btn" id="send-backward" title="Send backward">↓</button>
+              <button class="ord-btn" id="send-back"     title="Send to back">↓↓</button>
+              <button class="ord-btn dup" id="duplicate-elem" title="Duplicate">⊕</button>
+              <button class="ord-btn del" id="delete-elem"    title="Delete">⊗</button>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /props-view -->
+
+    </div><!-- /panel-top -->
+
+    <!-- Layers — always visible ──────────────────────── -->
+    <div class="panel-layers">
+      <div class="layers-header">
+        <div class="layers-title">
+          <span>Layers</span>
+          <span class="layer-count" id="layer-count">0</span>
+        </div>
+        <div class="add-layer-wrap">
+          <button class="add-layer-btn" id="add-layer-btn" title="Add layer">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Add layer
+          </button>
+          <div class="add-layer-menu" id="add-layer-menu" aria-hidden="true">
+            <button class="add-layer-item" data-layer="text">
+              <span class="ali-icon ali-text">T</span>Text
+            </button>
+            <button class="add-layer-item" data-layer="rect">
+              <span class="ali-icon">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="3" width="11" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4"/></svg>
+              </span>Rectangle
+            </button>
+            <button class="add-layer-item" data-layer="circle">
+              <span class="ali-icon">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><ellipse cx="7" cy="7" rx="5.5" ry="5.5" stroke="currentColor" stroke-width="1.4"/></svg>
+              </span>Circle
+            </button>
+            <button class="add-layer-item" data-layer="triangle">
+              <span class="ali-icon">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L12.5 11.5H1.5L7 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              </span>Triangle
+            </button>
+            <button class="add-layer-item" data-layer="line">
+              <span class="ali-icon">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </span>Line
+            </button>
+            <div class="add-layer-sep"></div>
+            <button class="add-layer-item" data-layer="image">
+              <span class="ali-icon">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/><circle cx="4.5" cy="4.5" r="1.2" stroke="currentColor" stroke-width="1.1"/><path d="M1 9.5l3.5-2.5 3 3 2-2 3.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+              </span>Image
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="layers-body" id="layers-list">
+        <p class="empty-note">No layers yet. Click <strong>Add layer</strong> to start.</p>
+      </div>
+    </div>
+
+  </aside><!-- /sidebar-right -->
+
+</div><!-- /app-body -->
+
+<!-- Mobile FABs: quick Export + Share (hidden on desktop) -->
+<div class="mobile-fab-row" id="mobile-fab-row">
+  <button class="mob-fab mob-fab-share" id="fab-share-btn" aria-label="Share image">
+    <svg width="17" height="17" viewBox="0 0 15 15" fill="none"><circle cx="12" cy="3" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="3" cy="7.5" r="1.8" stroke="currentColor" stroke-width="1.3"/><path d="M10.3 3.8L4.7 6.7M4.7 8.3l5.6 2.9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    Share
+  </button>
+  <button class="mob-fab mob-fab-export" id="fab-export-btn" aria-label="Export image">
+    <svg width="17" height="17" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7M4 5.5l2.5 2.5L9 5.5M1 9.5v1.5a1 1 0 001 1h9a1 1 0 001-1V9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Export
+  </button>
+</div>
+
+<!-- Mobile backdrop (dims canvas when sheet is open) -->
+<div id="sheet-backdrop" class="sheet-backdrop"></div>
+
+<!-- ── AI Result Modal ─────────────────────────────────── -->
+<div id="ai-modal" class="ai-modal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="ai-modal-heading">
+  <div class="ai-modal-overlay" id="ai-modal-overlay"></div>
+  <div class="ai-modal-card">
+
+    <div class="ai-modal-header">
+      <div class="ai-modal-heading" id="ai-modal-heading">
+        <svg width="15" height="15" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 5H13L9.5 7.5 10.8 12 7 9.5 3.2 12 4.5 7.5 1 5H5.5L7 1Z" fill="#6c63ff"/></svg>
+        AI Generated Image
+      </div>
+      <button class="ai-modal-close" id="ai-modal-close" aria-label="Close">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1.5 1.5l10 10M11.5 1.5l-10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Image display area -->
+    <div class="ai-modal-img-area" id="ai-modal-img-area">
+      <img id="ai-modal-img" src="" alt="AI generated image" style="display:none">
+
+      <!-- Loading state -->
+      <div class="ai-modal-loading" id="ai-modal-loading">
+        <span class="ai-spinner ai-spinner-lg"></span>
+        <p class="ai-loading-label">Generating your image…</p>
+        <p class="ai-loading-sub">This usually takes 10–30 seconds</p>
+      </div>
+
+      <!-- Error state -->
+      <div class="ai-modal-err" id="ai-modal-err" style="display:none">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ff3b5c" stroke-width="1.4"><circle cx="12" cy="12" r="10"/><path d="M12 8v5M12 16.5v.5" stroke-linecap="round"/></svg>
+        <p>Generation failed</p>
+        <span>The service may be busy — adjust your prompt and try again</span>
+      </div>
+    </div>
+
+    <!-- Prompt used (shown once image is ready) -->
+    <p class="ai-modal-prompt-text" id="ai-modal-prompt-text" style="display:none"></p>
+
+    <!-- Actions (shown once image is ready) -->
+    <div class="ai-modal-actions" id="ai-modal-actions" style="display:none">
+
+      <!-- Note: swaps content based on text mode -->
+      <div class="ai-text-note" id="ai-text-note" style="display:none"></div>
+
+      <div class="ai-primary-actions">
+        <button class="ai-action-btn" id="ai-modal-add-canvas">
+          <svg width="14" height="14" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7.5 4v7M4 7.5h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Add to Canvas
+        </button>
+        <button class="ai-action-btn" id="ai-modal-add-text-layer">
+          <svg width="14" height="14" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 5h5M7.5 5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Add with Text Layer
+        </button>
+      </div>
+
+      <div class="ai-action-row">
+        <button class="ai-action-btn" id="ai-modal-set-bg">
+          <svg width="14" height="14" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.3"/><circle cx="5" cy="5" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 10l4-3 3 3 2-2 4 3" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+          Set as Background
+        </button>
+        <button class="ai-action-btn" id="ai-modal-download">
+          <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7M4 5.5l2.5 2.5L9 5.5M1 9.5v1.5a1 1 0 001 1h9a1 1 0 001-1V9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Download
+        </button>
+        <button class="ai-action-btn" id="ai-modal-share">
+          <svg width="14" height="14" viewBox="0 0 15 15" fill="none"><circle cx="12" cy="3" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="3" cy="7.5" r="1.8" stroke="currentColor" stroke-width="1.3"/><path d="M10.3 3.8L4.7 6.7M4.7 8.3l5.6 2.9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Share
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Regenerate -->
+    <button class="ai-modal-regen" id="ai-modal-regen" style="display:none">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7A5 5 0 017 2a5 5 0 014.2 2.3M12 7a5 5 0 01-5 5 5 5 0 01-4.2-2.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M11 2v2.5H8.5M3 12V9.5H5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Regenerate with same settings
+    </button>
+
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<!-- ── Share Modal ────────────────────────────────────────── -->
+<div id="share-modal" class="share-modal" style="display:none" role="dialog" aria-modal="true">
+  <div class="share-modal-overlay" id="share-modal-overlay"></div>
+  <div class="share-modal-card">
+
+    <!-- Header -->
+    <div class="share-modal-header">
+      <div>
+        <h2 class="share-modal-title">Share image</h2>
+        <p class="share-modal-sub" id="share-modal-sub"></p>
+      </div>
+      <button class="share-modal-close" id="share-modal-close" aria-label="Close">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1.5 1.5l10 10M11.5 1.5l-10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Copy image CTA -->
+    <div class="share-copy-section">
+      <button class="share-copy-btn" id="share-copy-img-btn">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M10 3.5H5A1.5 1.5 0 003.5 5v7A1.5 1.5 0 005 13.5h7A1.5 1.5 0 0013.5 12V7M10 3.5l3.5 3.5M10 3.5V7h3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Copy image to clipboard
+      </button>
+    </div>
+
+    <!-- Divider -->
+    <div class="share-divider"><span>or share via</span></div>
+
+    <!-- Platform grid -->
+    <div class="share-platform-grid" id="share-platform-grid">
+
+      <button class="share-platform-item" data-shr="download">
+        <div class="share-platform-icon shr-neutral">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3v9M7 9l3 3 3-3M4 14v1.5A1.5 1.5 0 005.5 17h9a1.5 1.5 0 001.5-1.5V14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div><span>Download</span>
+      </button>
+
+      <button class="share-platform-item" data-shr="native">
+        <div class="share-platform-icon shr-neutral">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="15.5" cy="4.5" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="15.5" cy="15.5" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="4.5" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 10.8l6 3.1M13 6.1L7 9.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div><span>Share</span>
+      </button>
+
+      <button class="share-platform-item" data-shr="whatsapp">
+        <div class="share-platform-icon shr-whatsapp">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </div><span>WhatsApp</span>
+      </button>
+
+      <button class="share-platform-item" data-shr="telegram">
+        <div class="share-platform-icon shr-telegram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.4 13.992l-2.94-.918c-.64-.203-.654-.64.135-.954l11.57-4.461c.537-.194 1.006.131.73.562z"/></svg>
+        </div><span>Telegram</span>
+      </button>
+
+      <button class="share-platform-item" data-shr="email">
+        <div class="share-platform-icon shr-email">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2.5" stroke="white" stroke-width="1.8"/><path d="M2 7l10 7 10-7" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div><span>Email</span>
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+<script src="app.js"></script>
+
+
+</body>
+</html>
