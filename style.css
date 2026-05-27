@@ -1648,17 +1648,23 @@ input[type="color"] {
     align-items: stretch;
   }
 
-  /* Row 1: logo + export button */
+  /* Row 1: logo left, export button right */
   .logo {
     padding: 10px 12px;
     align-self: center;
   }
+  .hdr-filename { display: none; }   /* redundant on mobile */
+  .spacer { display: none; }         /* replaced by margin-left: auto on export */
+  .export-hdr-wrap {
+    margin-left: auto;
+    margin-right: 12px;
+    align-self: center;
+  }
   .btn-export-hdr {
-    margin: 8px 12px 8px auto;
+    margin: 0;
     padding: 0 14px;
     height: 34px;
     font-size: 13px;
-    align-self: center;
   }
 
   /* Hide desktop-only header elements */
