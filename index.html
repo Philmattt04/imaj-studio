@@ -26,11 +26,19 @@
 
   <div class="vsep"></div>
 
-  <div class="hdr-filename">
-    <svg class="hdr-filename-icon" width="13" height="13" viewBox="0 0 13 13" fill="none">
-      <path d="M2 10.5V8L8.5 1.5a1.2 1.2 0 011.7 0l1.3 1.3a1.2 1.2 0 010 1.7L5 11H2.5L2 10.5z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <input type="text" id="hdr-filename-input" value="my-image" spellcheck="false" aria-label="Image name" title="Click to rename">
+  <div class="hdr-end-group">
+    <div class="hdr-filename">
+      <svg class="hdr-filename-icon" width="13" height="13" viewBox="0 0 13 13" fill="none">
+        <path d="M2 10.5V8L8.5 1.5a1.2 1.2 0 011.7 0l1.3 1.3a1.2 1.2 0 010 1.7L5 11H2.5L2 10.5z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <input type="text" id="hdr-filename-input" value="my-image" spellcheck="false" aria-label="Image name" title="Click to rename">
+    </div>
+
+    <div class="lang-toggle" id="lang-toggle">
+      <button class="lang-btn" data-lang="ht">KR</button>
+      <button class="lang-btn" data-lang="fr">FR</button>
+      <button class="lang-btn active" data-lang="en">EN</button>
+    </div>
   </div>
 
   <div class="vsep"></div>
@@ -56,19 +64,28 @@
 
   <!-- Element tool buttons -->
   <div class="toolbar" role="toolbar" aria-label="Add elements">
+    <button class="tool-btn" id="bg-tool-btn" title="Choose Background">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="14" height="12" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 10.5l4-3.5 3 2.5 2.5-2 4.5 3.5" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="5.5" cy="6" r="1.3" fill="currentColor" opacity="0.5"/></svg>
+      <span data-i18n="hdr-bg">BG</span>
+    </button>
     <button class="tool-btn" id="add-text" title="Add Text (T)">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><text x="1" y="13" font-family="Arial" font-size="13" font-weight="bold" fill="currentColor">T</text></svg>
-      Text
+      <span data-i18n="hdr-add-text">+ Text</span>
     </button>
     <button class="tool-btn" id="add-image" title="Add Image">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="14" height="12" rx="1.5" stroke="currentColor" stroke-width="1.3"/><circle cx="5.5" cy="6.5" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 11l4-3.5 3.5 3 2.5-2.5 5 4" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
-      Image
+      <span data-i18n="hdr-add-image">+ Image</span>
       <input type="file" id="image-file" accept="image/*" hidden>
     </button>
     <div class="tool-sep"></div>
     <button class="tool-btn tool-ai" id="ai-tool-btn" title="AI Image Generator">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 5H13L9.5 7.5 10.8 12 7 9.5 3.2 12 4.5 7.5 1 5H5.5L7 1Z" fill="currentColor"/></svg>
-      AI Generate
+      <span data-i18n="hdr-ai">AI Art</span>
+    </button>
+    <div class="tool-sep mobile-only"></div>
+    <button class="tool-btn mobile-only" id="mobile-panel-btn" title="Open panel">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1.5" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M10.5 1.5v13" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="5.5" x2="14" y2="5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="12" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="12" y1="10.5" x2="14" y2="10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <span data-i18n="hdr-panel">Panel</span>
     </button>
   </div>
 
@@ -79,7 +96,7 @@
     <button id="zoom-out" title="Zoom out">−</button>
     <span id="zoom-level">100%</span>
     <button id="zoom-in" title="Zoom in">+</button>
-    <button id="zoom-fit" title="Fit to view">Fit</button>
+    <button id="zoom-fit" title="Fit to view" data-i18n="zoom-fit">Fit</button>
   </div>
 
   <div class="vsep"></div>
@@ -87,22 +104,22 @@
   <div class="export-hdr-wrap">
     <button class="btn-export-hdr" id="export-btn-header">
       <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7M4 5.5l2.5 2.5L9 5.5M1 9.5v1.5a1 1 0 001 1h9a1 1 0 001-1V9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Export
+      <span data-i18n="hdr-export">Export</span>
       <svg class="export-chevron" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div class="export-hdr-menu" id="export-hdr-menu" aria-hidden="true">
       <button class="export-hdr-item" id="export-hdr-download">
         <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7M4 5.5l2.5 2.5L9 5.5M1 9.5v1.5a1 1 0 001 1h9a1 1 0 001-1V9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Download
+        <span data-i18n="save-image">Save Image</span>
       </button>
       <button class="export-hdr-item" id="export-hdr-share">
         <svg width="13" height="13" viewBox="0 0 15 15" fill="none"><circle cx="12" cy="3" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="3" cy="7.5" r="1.8" stroke="currentColor" stroke-width="1.3"/><path d="M10.3 3.8L4.7 6.7M4.7 8.3l5.6 2.9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-        Share
+        <span data-i18n="share">Share</span>
       </button>
       <div class="export-hdr-sep"></div>
       <button class="export-hdr-item" id="export-hdr-copy">
         <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 4V3A2 2 0 012 1h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-        Copy to Clipboard
+        <span data-i18n="copy-clipboard">Copy to Clipboard</span>
       </button>
     </div>
   </div>
@@ -117,14 +134,23 @@
     <div class="canvas-scroll-space" id="canvas-scroll-space">
       <div class="canvas-wrapper" id="canvas-wrapper">
         <canvas id="canvas"></canvas>
+        <div id="canvas-empty-hint" class="canvas-empty-hint">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="3" y="3" width="30" height="30" rx="4" stroke="currentColor" stroke-width="1.8" stroke-dasharray="4 3"/><path d="M18 12v12M12 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <p>Tap <strong>+ Text</strong> or <strong>+ Image</strong> to add something</p>
+          <p class="canvas-hint-sub">or tap the canvas to set a background</p>
+        </div>
       </div>
     </div>
   </main>
 
-  <!-- Right sidebar / mobile bottom sheet ─────────────── -->
+  <!-- Right sidebar ─────────────────────────────────────── -->
   <aside class="sidebar-right">
-    <!-- Mobile drag handle (hidden on desktop) -->
-    <div class="sheet-drag-handle" id="sheet-drag-handle" aria-hidden="true"></div>
+
+    <!-- Close button (mobile drawer only) -->
+    <button class="mobile-drawer-close mobile-only" id="mobile-drawer-close" aria-label="Close panel">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1.5 1.5l10 10M11.5 1.5l-10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span data-i18n="close-panel">Close</span>
+    </button>
 
     <!-- TOP HALF: switches between tabs-view and props-view -->
     <div class="panel-top">
@@ -133,45 +159,24 @@
       <div id="tabs-view">
 
         <div class="ptab-bar">
-          <button class="ptab active" data-tab="setup">
-            <span class="ptab-full">Setup</span><span class="ptab-short">Setup</span>
-          </button>
-          <button class="ptab" data-tab="bg">
-            <span class="ptab-full">Background</span><span class="ptab-short">BG</span>
+          <button class="ptab active" data-tab="bg">
+            <span class="ptab-full" data-i18n="tab-bg">Background</span><span class="ptab-short" data-i18n="tab-bg-short">BG</span>
           </button>
           <button class="ptab ptab-ai" data-tab="ai">
             <span class="ptab-full">✦ AI</span><span class="ptab-short">✦ AI</span>
           </button>
           <button class="ptab" data-tab="export">
-            <span class="ptab-full">Export</span><span class="ptab-short">Export</span>
+            <span class="ptab-full" data-i18n="hdr-export">Export</span><span class="ptab-short" data-i18n="hdr-export">Export</span>
           </button>
         </div>
 
-        <!-- Setup tab -->
-        <div class="ptab-pane active" data-tab="setup">
-          <div class="pane-body">
-            <p class="section-label">Size presets</p>
-            <div class="preset-grid">
-              <button class="preset-btn" data-w="800"  data-h="600">800×600</button>
-              <button class="preset-btn" data-w="1080" data-h="1080">1:1 Square</button>
-              <button class="preset-btn" data-w="1920" data-h="1080">16:9 HD</button>
-              <button class="preset-btn" data-w="1080" data-h="1920">9:16 Story</button>
-              <button class="preset-btn" data-w="1500" data-h="500">Twitter Hdr</button>
-              <button class="preset-btn" data-w="1200" data-h="628">OG Image</button>
-            </div>
-            <p class="setup-hint">Edit width × height in the top toolbar, or pick a preset above.</p>
-          </div>
-        </div>
-
         <!-- Background tab -->
-        <div class="ptab-pane" data-tab="bg">
+        <div class="ptab-pane active" data-tab="bg">
           <div class="pane-body">
 
             <div class="sub-tab-row" id="bg-tabs">
-              <button class="sub-tab active" data-tab="templates">Templates</button>
-              <button class="sub-tab" data-tab="color">Color</button>
-              <button class="sub-tab" data-tab="gradient">Gradient</button>
-              <button class="sub-tab" data-tab="image">Image</button>
+              <button class="sub-tab active" data-tab="templates" data-i18n="sub-templates">Templates</button>
+              <button class="sub-tab" data-tab="color" data-i18n="sub-color">Color</button>
             </div>
 
             <!-- Templates -->
@@ -197,53 +202,6 @@
               </div>
             </div>
 
-            <!-- Gradient -->
-            <div id="bg-gradient-panel" class="tab-pane">
-              <div class="field-row">
-                <label>Type</label>
-                <select id="gradient-type">
-                  <option value="linear">Linear</option>
-                  <option value="radial">Radial</option>
-                </select>
-              </div>
-              <div class="grad-stops">
-                <div class="grad-stop">
-                  <span>From</span>
-                  <input type="color" id="gradient-color1" value="#6c63ff">
-                  <input type="text"  id="gradient-hex1"   value="#6c63ff" class="hex-input" maxlength="7">
-                </div>
-                <div class="grad-stop">
-                  <span>To</span>
-                  <input type="color" id="gradient-color2" value="#ff6584">
-                  <input type="text"  id="gradient-hex2"   value="#ff6584" class="hex-input" maxlength="7">
-                </div>
-              </div>
-              <div class="field-row" id="gradient-angle-row">
-                <label>Angle</label>
-                <input type="range" id="gradient-angle" min="0" max="360" value="135">
-                <span class="val-tag" id="gradient-angle-val">135°</span>
-              </div>
-              <button class="btn-outline w-full" id="apply-gradient">Apply Gradient</button>
-            </div>
-
-            <!-- Image -->
-            <div id="bg-image-panel" class="tab-pane">
-              <div class="drop-zone" id="bg-upload-zone">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                <p>Click or drag image</p>
-                <input type="file" id="bg-image-file" accept="image/*" hidden>
-              </div>
-              <div class="field-row" id="bg-fit-row" style="display:none">
-                <label>Fit</label>
-                <select id="bg-image-fit">
-                  <option value="cover">Cover</option>
-                  <option value="contain">Contain</option>
-                  <option value="stretch">Stretch</option>
-                </select>
-              </div>
-              <button class="btn-danger w-full" id="remove-bg-image" style="display:none">Remove image</button>
-            </div>
-
           </div>
         </div>
 
@@ -252,7 +210,13 @@
           <div class="pane-body">
 
             <div class="field-col">
-              <label>Prompt</label>
+              <div class="prompt-label-row">
+                <label>Prompt</label>
+                <button class="prompt-random-btn" id="prompt-random-btn" title="Randomize prompt">
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 4h2.5a3 3 0 012.4 1.2l1.2 1.6A3 3 0 009.5 8H12M12 4h-2.5a3 3 0 00-2.4 1.2L5.9 7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 9h2.5a3 3 0 002.4-1.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M10.5 2.5L12 4l-1.5 1.5M10.5 6.5L12 8l-1.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Randomize
+                </button>
+              </div>
               <textarea id="ai-prompt" rows="3" placeholder="A golden sunset over mountains with dramatic clouds…"></textarea>
             </div>
 
@@ -383,20 +347,22 @@
                   <option value="1024x1024">1024 × 1024</option>
                 </select>
               </div>
-              <div class="field-row">
-                <label>Model</label>
-                <select id="ai-model">
-                  <option value="flux">Flux (default)</option>
-                  <option value="flux-realism">Flux Realism</option>
-                  <option value="flux-anime">Flux Anime</option>
-                  <option value="flux-3d">Flux 3D</option>
-                  <option value="turbo">Turbo (fast)</option>
-                </select>
-              </div>
-              <div class="field-row">
-                <label>Seed</label>
-                <input type="number" id="ai-seed" placeholder="Random" min="0" max="999999" style="width:80px;flex:none">
-                <button class="btn-icon-sm" id="ai-rand-seed" title="Random seed">🎲</button>
+              <div id="ai-pollinations-only">
+                <div class="field-row">
+                  <label>Model</label>
+                  <select id="ai-model">
+                    <option value="flux">Flux (default)</option>
+                    <option value="flux-realism">Flux Realism</option>
+                    <option value="flux-anime">Flux Anime</option>
+                    <option value="flux-3d">Flux 3D</option>
+                    <option value="turbo">Turbo (fast)</option>
+                  </select>
+                </div>
+                <div class="field-row">
+                  <label>Seed</label>
+                  <input type="number" id="ai-seed" placeholder="Random" min="0" max="999999" style="width:80px;flex:none">
+                  <button class="btn-icon-sm" id="ai-rand-seed" title="Random seed">🎲</button>
+                </div>
               </div>
             </div>
 
@@ -426,12 +392,12 @@
         <div class="ptab-pane" data-tab="export">
           <div class="pane-body">
             <div class="field-row">
-              <label>Quality</label>
+              <label data-i18n="export-quality">Quality</label>
               <input type="range" id="export-quality" min="10" max="100" value="92">
               <span class="val-tag" id="quality-val">92%</span>
             </div>
             <div class="field-row">
-              <label>Scale</label>
+              <label data-i18n="export-scale">Scale</label>
               <select id="export-scale">
                 <option value="1">1× Original</option>
                 <option value="2">2× Retina</option>
@@ -439,28 +405,28 @@
               </select>
             </div>
             <div class="field-col">
-              <label>Filename</label>
+              <label data-i18n="export-filename">Filename</label>
               <input type="text" id="export-filename" value="my-image" class="text-input">
             </div>
             <div class="export-action-row">
               <button class="btn-primary" id="export-btn-bottom">
                 <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7M4 5.5l2.5 2.5L9 5.5M1 9.5v1.5a1 1 0 001 1h9a1 1 0 001-1V9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                Download
+                <span data-i18n="save-image">Save Image</span>
               </button>
               <button class="btn-outline" id="share-btn">
                 <svg width="13" height="13" viewBox="0 0 15 15" fill="none"><circle cx="12" cy="3" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="3" cy="7.5" r="1.8" stroke="currentColor" stroke-width="1.3"/><path d="M10.3 3.8L4.7 6.7M4.7 8.3l5.6 2.9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-                Share
+                <span data-i18n="share">Share</span>
               </button>
             </div>
             <button class="btn-outline w-full" id="copy-clipboard-btn" style="margin-top:8px">
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 4V3A2 2 0 012 1h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-              Copy to Clipboard
+              <span data-i18n="copy-clipboard">Copy to Clipboard</span>
             </button>
 
             <div class="export-options-sep"></div>
 
             <div class="field-row">
-              <label for="transparent-bg-toggle">Transparent bg <span class="opt-tag">PNG</span></label>
+              <label for="transparent-bg-toggle"><span data-i18n="export-transparent">Transparent bg</span> <span class="opt-tag">PNG</span></label>
               <label class="toggle-sw">
                 <input type="checkbox" id="transparent-bg-toggle" checked>
                 <span class="sw-track"></span>
@@ -468,7 +434,7 @@
             </div>
 
             <div class="field-row">
-              <label for="history-toggle">Save history</label>
+              <label for="history-toggle" data-i18n="export-history">Save history</label>
               <label class="toggle-sw">
                 <input type="checkbox" id="history-toggle">
                 <span class="sw-track"></span>
@@ -479,8 +445,8 @@
           <!-- History panel — visible only when history is on -->
           <div id="history-panel" style="display:none">
             <div class="history-header">
-              <span>Recent exports</span>
-              <button id="history-clear-btn">Clear all</button>
+              <span data-i18n="export-recent">Recent exports</span>
+              <button id="history-clear-btn" data-i18n="export-clear">Clear all</button>
             </div>
             <div id="history-grid" class="history-grid"></div>
           </div>
@@ -494,7 +460,7 @@
         <div class="props-header">
           <button class="back-btn" id="props-back">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L4 6l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Canvas
+            <span data-i18n="prop-back">Canvas</span>
           </button>
           <span class="type-chip" id="prop-type-badge"></span>
         </div>
@@ -505,36 +471,41 @@
           <div id="text-props" style="display:none">
 
             <div class="field-col">
-              <label>Content</label>
+              <label data-i18n="prop-content">Content</label>
               <textarea id="text-content" rows="2"></textarea>
+              <button class="verse-pick-btn" id="verse-pick-btn">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 1.5h9a1 1 0 011 1v8a1 1 0 01-1 1H2a1 1 0 01-1-1v-8a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M4 1.5v10M4 5.5h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                <span data-i18n="insert-verse">Insert Bible Verse</span>
+              </button>
             </div>
 
             <!-- Font picker -->
-            <p class="section-label" style="margin-top:12px;margin-bottom:6px">Font</p>
-            <select id="text-font" style="display:none">
-              <option>Arial</option><option>Helvetica</option><option>Georgia</option>
-              <option>Times New Roman</option><option>Courier New</option><option>Roboto</option>
-              <option>Montserrat</option><option>Playfair Display</option><option>Lato</option>
-              <option>Oswald</option>
-            </select>
-            <div class="font-chip-grid" id="font-chip-grid">
-              <button class="font-chip active" data-font="Arial"            style="font-family:Arial,sans-serif">Arial</button>
-              <button class="font-chip"        data-font="Helvetica"        style="font-family:Helvetica,sans-serif">Helvetica</button>
-              <button class="font-chip"        data-font="Roboto"           style="font-family:Roboto,sans-serif">Roboto</button>
-              <button class="font-chip"        data-font="Montserrat"       style="font-family:Montserrat,sans-serif">Montserrat</button>
-              <button class="font-chip"        data-font="Lato"             style="font-family:Lato,sans-serif">Lato</button>
-              <button class="font-chip"        data-font="Oswald"           style="font-family:Oswald,sans-serif">Oswald</button>
-              <button class="font-chip"        data-font="Playfair Display" style="font-family:'Playfair Display',serif">Playfair Display</button>
-              <button class="font-chip"        data-font="Georgia"          style="font-family:Georgia,serif">Georgia</button>
-              <button class="font-chip"        data-font="Times New Roman"  style="font-family:'Times New Roman',serif">Times New Roman</button>
-              <button class="font-chip"        data-font="Courier New"      style="font-family:'Courier New',monospace">Courier New</button>
+            <div class="field-row" style="margin-top:12px">
+              <label data-i18n="prop-font">Font</label>
+              <select id="text-font" class="font-select">
+                <option value="Arial"           style="font-family:Arial,sans-serif">Arial</option>
+                <option value="Helvetica"       style="font-family:Helvetica,sans-serif">Helvetica</option>
+                <option value="Roboto"          style="font-family:Roboto,sans-serif">Roboto</option>
+                <option value="Montserrat"      style="font-family:Montserrat,sans-serif">Montserrat</option>
+                <option value="Lato"            style="font-family:Lato,sans-serif">Lato</option>
+                <option value="Oswald"          style="font-family:Oswald,sans-serif">Oswald</option>
+                <option value="Playfair Display" style="font-family:'Playfair Display',serif">Playfair Display</option>
+                <option value="Georgia"         style="font-family:Georgia,serif">Georgia</option>
+                <option value="Times New Roman" style="font-family:'Times New Roman',serif">Times New Roman</option>
+                <option value="Courier New"     style="font-family:'Courier New',monospace">Courier New</option>
+                <option value="Impact"          style="font-family:Impact,sans-serif">Impact</option>
+                <option value="Verdana"         style="font-family:Verdana,sans-serif">Verdana</option>
+                <option value="Trebuchet MS"    style="font-family:'Trebuchet MS',sans-serif">Trebuchet MS</option>
+                <option value="Comic Sans MS"   style="font-family:'Comic Sans MS',cursive">Comic Sans MS</option>
+              </select>
             </div>
 
             <!-- Size -->
             <div class="txt-size-row">
               <label>Size</label>
-              <input type="range" id="text-size-slider" min="8" max="200" value="48">
-              <input type="number" id="text-size" min="4" max="800" value="40">
+              <button class="size-step" id="text-size-dec">−</button>
+              <input type="number" id="text-size" min="4" max="800" value="48">
+              <button class="size-step" id="text-size-inc">+</button>
               <span class="unit">px</span>
             </div>
 
@@ -557,7 +528,7 @@
 
             <!-- Color -->
             <div class="field-row" style="margin-top:6px">
-              <label>Color</label>
+              <label data-i18n="prop-color">Color</label>
               <input type="color" id="text-color" value="#000000">
               <input type="text"  id="text-color-hex" value="#000000" class="hex-input" maxlength="7">
             </div>
@@ -570,37 +541,6 @@
               <button class="txt-swatch" data-color="#22c55e" style="background:#22c55e"          title="Green"></button>
               <button class="txt-swatch" data-color="#f59e0b" style="background:#f59e0b"          title="Amber"></button>
               <button class="txt-swatch" data-color="#ec4899" style="background:#ec4899"          title="Pink"></button>
-            </div>
-
-            <!-- Advanced -->
-            <button class="props-adv-toggle" id="text-advanced-toggle" aria-expanded="false">
-              <svg class="ai-chevron" width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 4l3.5 3.5L9 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Advanced
-            </button>
-            <div id="text-advanced-body" style="display:none">
-              <div class="field-row">
-                <label>Line Height</label>
-                <input type="range" id="text-line-height" min="0.5" max="3" step="0.05" value="1.2">
-                <span class="val-tag" id="text-line-height-val">1.2</span>
-              </div>
-              <div class="field-row">
-                <label>Letter Spacing</label>
-                <input type="range" id="text-char-spacing" min="-200" max="1000" step="10" value="0">
-                <span class="val-tag" id="text-char-spacing-val">0</span>
-              </div>
-              <div class="field-row">
-                <label>Shadow</label>
-                <label class="toggle-sw">
-                  <input type="checkbox" id="text-shadow">
-                  <span class="sw-track"></span>
-                </label>
-              </div>
-              <div id="text-shadow-opts" style="display:none">
-                <div class="field-row"><label>Color</label><input type="color" id="text-shadow-color" value="#000000"></div>
-                <div class="field-row"><label>Blur</label><input type="range" id="text-shadow-blur" min="0" max="60" value="10"><span class="val-tag" id="text-shadow-blur-val">10</span></div>
-                <div class="field-row"><label>Offset X</label><input type="range" id="text-shadow-ox" min="-40" max="40" value="4"><span class="val-tag" id="text-shadow-ox-val">4</span></div>
-                <div class="field-row"><label>Offset Y</label><input type="range" id="text-shadow-oy" min="-40" max="40" value="4"><span class="val-tag" id="text-shadow-oy-val">4</span></div>
-              </div>
             </div>
 
           </div>
@@ -640,23 +580,54 @@
           <!-- Common -->
           <div id="common-props">
             <div class="prop-divider"></div>
-            <div class="field-row">
-              <label>Opacity</label>
-              <input type="range" id="elem-opacity" min="0" max="100" value="100">
-              <span class="val-tag" id="elem-opacity-val">100%</span>
-            </div>
-            <div class="field-row">
-              <label>Rotation</label>
-              <input type="range" id="elem-rotation" min="-180" max="180" value="0">
-              <span class="val-tag" id="elem-rotation-val">0°</span>
-            </div>
-            <div class="order-row">
-              <button class="ord-btn" id="bring-front"   title="Bring to front">↑↑</button>
-              <button class="ord-btn" id="bring-forward" title="Bring forward">↑</button>
-              <button class="ord-btn" id="send-backward" title="Send backward">↓</button>
-              <button class="ord-btn" id="send-back"     title="Send to back">↓↓</button>
-              <button class="ord-btn dup" id="duplicate-elem" title="Duplicate">⊕</button>
-              <button class="ord-btn del" id="delete-elem"    title="Delete">⊗</button>
+            <button class="props-adv-toggle" id="common-advanced-toggle" aria-expanded="false">
+              <svg class="ai-chevron" width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 4l3.5 3.5L9 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span data-i18n="advanced">Advanced</span>
+            </button>
+            <div id="common-advanced-body">
+              <!-- Text-only fields (hidden for shapes/images) -->
+              <div class="field-row text-adv-only">
+                <label>Line Height</label>
+                <input type="range" id="text-line-height" min="0.5" max="3" step="0.05" value="1.2">
+                <span class="val-tag" id="text-line-height-val">1.2</span>
+              </div>
+              <div class="field-row text-adv-only">
+                <label>Letter Spacing</label>
+                <input type="range" id="text-char-spacing" min="-200" max="1000" step="10" value="0">
+                <span class="val-tag" id="text-char-spacing-val">0</span>
+              </div>
+              <div class="field-row text-adv-only">
+                <label>Shadow</label>
+                <label class="toggle-sw">
+                  <input type="checkbox" id="text-shadow">
+                  <span class="sw-track"></span>
+                </label>
+              </div>
+              <div id="text-shadow-opts" class="text-adv-only" style="display:none">
+                <div class="field-row"><label>Color</label><input type="color" id="text-shadow-color" value="#000000"></div>
+                <div class="field-row"><label>Blur</label><input type="range" id="text-shadow-blur" min="0" max="60" value="10"><span class="val-tag" id="text-shadow-blur-val">10</span></div>
+                <div class="field-row"><label>Offset X</label><input type="range" id="text-shadow-ox" min="-40" max="40" value="4"><span class="val-tag" id="text-shadow-ox-val">4</span></div>
+                <div class="field-row"><label>Offset Y</label><input type="range" id="text-shadow-oy" min="-40" max="40" value="4"><span class="val-tag" id="text-shadow-oy-val">4</span></div>
+              </div>
+              <!-- Common fields (all element types) -->
+              <div class="field-row">
+                <label>Opacity</label>
+                <input type="range" id="elem-opacity" min="0" max="100" value="100">
+                <span class="val-tag" id="elem-opacity-val">100%</span>
+              </div>
+              <div class="field-row">
+                <label>Rotation</label>
+                <input type="range" id="elem-rotation" min="-180" max="180" value="0">
+                <span class="val-tag" id="elem-rotation-val">0°</span>
+              </div>
+              <div class="order-row">
+                <button class="ord-btn" id="bring-front"   title="Bring to front">↑↑</button>
+                <button class="ord-btn" id="bring-forward" title="Bring forward">↑</button>
+                <button class="ord-btn" id="send-backward" title="Send backward">↓</button>
+                <button class="ord-btn" id="send-back"     title="Send to back">↓↓</button>
+                <button class="ord-btn dup" id="duplicate-elem" title="Duplicate">⊕</button>
+                <button class="ord-btn del" id="delete-elem"    title="Delete">⊗</button>
+              </div>
             </div>
           </div>
 
@@ -669,43 +640,43 @@
     <div class="panel-layers">
       <div class="layers-header">
         <div class="layers-title">
-          <span>Layers</span>
+          <span data-i18n="layers-title">Layers</span>
           <span class="layer-count" id="layer-count">0</span>
         </div>
         <div class="add-layer-wrap">
           <button class="add-layer-btn" id="add-layer-btn" title="Add layer">
             <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-            Add layer
+            <span data-i18n="add-layer">Add layer</span>
           </button>
           <div class="add-layer-menu" id="add-layer-menu" aria-hidden="true">
             <button class="add-layer-item" data-layer="text">
-              <span class="ali-icon ali-text">T</span>Text
+              <span class="ali-icon ali-text">T</span><span data-i18n="layer-text">Text</span>
             </button>
             <button class="add-layer-item" data-layer="rect">
               <span class="ali-icon">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="3" width="11" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4"/></svg>
-              </span>Rectangle
+              </span><span data-i18n="layer-rect">Rectangle</span>
             </button>
             <button class="add-layer-item" data-layer="circle">
               <span class="ali-icon">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><ellipse cx="7" cy="7" rx="5.5" ry="5.5" stroke="currentColor" stroke-width="1.4"/></svg>
-              </span>Circle
+              </span><span data-i18n="layer-circle">Circle</span>
             </button>
             <button class="add-layer-item" data-layer="triangle">
               <span class="ali-icon">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L12.5 11.5H1.5L7 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-              </span>Triangle
+              </span><span data-i18n="layer-tri">Triangle</span>
             </button>
             <button class="add-layer-item" data-layer="line">
               <span class="ali-icon">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-              </span>Line
+              </span><span data-i18n="layer-line">Line</span>
             </button>
             <div class="add-layer-sep"></div>
             <button class="add-layer-item" data-layer="image">
               <span class="ali-icon">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/><circle cx="4.5" cy="4.5" r="1.2" stroke="currentColor" stroke-width="1.1"/><path d="M1 9.5l3.5-2.5 3 3 2-2 3.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
-              </span>Image
+              </span><span data-i18n="layer-image">Image</span>
             </button>
           </div>
         </div>
@@ -719,16 +690,122 @@
 
 </div><!-- /app-body -->
 
+<!-- Panel toggle button — fixed below the Export button (top-right) -->
+<button class="panel-toggle-btn" id="panel-toggle-btn" title="Toggle panel" aria-label="Toggle panel" aria-expanded="true">
+  <svg class="ptgl-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <rect x="1" y="1.5" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.4"/>
+    <path d="M10.5 1.5v13" stroke="currentColor" stroke-width="1.4"/>
+    <line x1="12" y1="5.5" x2="14" y2="5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    <line x1="12" y1="8"   x2="14" y2="8"   stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    <line x1="12" y1="10.5" x2="14" y2="10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+  </svg>
+</button>
+
+<!-- Background action bar (mobile) -->
+<div id="bg-action-bar" class="text-action-bar" aria-hidden="true">
+  <button id="bg-action-edit" class="text-action-btn">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9.5 2.5l2 2L4 12H2v-2L9.5 2.5z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span data-i18n="action-change-bg">Change Background</span>
+  </button>
+  <div class="text-action-sep"></div>
+  <button id="bg-action-add-text" class="text-action-btn">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    <span data-i18n="action-add-text">Add Text</span>
+  </button>
+  <div class="text-action-sep"></div>
+  <button id="bg-action-remove" class="text-action-btn text-action-del">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7a5 5 0 1 1 1.5 3.5M2 7H5M2 7V4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span data-i18n="action-reset">Reset</span>
+  </button>
+</div>
+
+<!-- Text selection action bar (mobile) -->
+<div id="text-action-bar" class="text-action-bar" aria-hidden="true">
+  <button id="text-action-edit" class="text-action-btn">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9.5 2.5l2 2L4 12H2v-2L9.5 2.5z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span data-i18n="action-edit-text">Edit Text</span>
+  </button>
+  <div class="text-action-sep"></div>
+  <button id="text-action-delete" class="text-action-btn text-action-del">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 4h10M5 4V2.5h4V4M5.5 6.5v4M8.5 6.5v4M3 4l.7 7.5h6.6L11 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span data-i18n="action-delete">Delete</span>
+  </button>
+</div>
+
 <!-- Mobile FABs: quick Export + Share (hidden on desktop) -->
 <div class="mobile-fab-row" id="mobile-fab-row">
   <button class="mob-fab mob-fab-share" id="fab-share-btn" aria-label="Share image">
     <svg width="17" height="17" viewBox="0 0 15 15" fill="none"><circle cx="12" cy="3" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="3" cy="7.5" r="1.8" stroke="currentColor" stroke-width="1.3"/><path d="M10.3 3.8L4.7 6.7M4.7 8.3l5.6 2.9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-    Share
+    <span data-i18n="share">Share</span>
   </button>
-  <button class="mob-fab mob-fab-export" id="fab-export-btn" aria-label="Export image">
+  <button class="mob-fab mob-fab-export" id="fab-export-btn" aria-label="Save image">
     <svg width="17" height="17" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7M4 5.5l2.5 2.5L9 5.5M1 9.5v1.5a1 1 0 001 1h9a1 1 0 001-1V9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Export
+    <span data-i18n="fab-save">Save</span>
   </button>
+</div>
+
+<!-- Bible verse picker modal -->
+<div id="verse-modal" class="verse-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Pick a Bible verse">
+  <div class="verse-modal-inner">
+    <div class="verse-modal-header">
+      <h2 class="verse-modal-title">
+        <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><path d="M2 1.5h9a1 1 0 011 1v8a1 1 0 01-1 1H2a1 1 0 01-1-1v-8a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M4 1.5v10M4 5.5h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span data-i18n="verse-modal-title">Bible Verse</span>
+      </h2>
+      <button class="verse-modal-close" id="verse-modal-close" aria-label="Close">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="verse-bible-lang-row">
+      <span class="verse-bible-lang-label">Version</span>
+      <button class="verse-bible-btn" data-blang="ht">Kreyòl</button>
+      <button class="verse-bible-btn" data-blang="fr">Français</button>
+      <button class="verse-bible-btn active" data-blang="en">English</button>
+    </div>
+    <input type="search" id="verse-search" class="verse-search" data-i18n-ph="verse-search-ph" placeholder="e.g. John 3:16, Psalm 23, or a keyword…" autocomplete="off">
+    <p class="verse-hint" data-i18n="verse-hint-text">Type a reference (John 3:16) to look up any verse in the Bible, or search by keyword.</p>
+    <div class="verse-list" id="verse-list"></div>
+  </div>
+</div>
+
+<!-- First-visit template picker -->
+<div id="template-modal" class="template-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Choose a starting template">
+  <div class="template-modal-inner">
+    <h2 class="template-modal-title">Start with a template</h2>
+    <p class="template-modal-sub">Pick a starting point — you can change everything.</p>
+    <div class="template-grid">
+      <button class="template-card" data-tpl="blank">
+        <div class="template-preview tpl-blank">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="3" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/></svg>
+        </div>
+        <span>Blank Canvas</span>
+      </button>
+      <button class="template-card" data-tpl="quote">
+        <div class="template-preview tpl-quote">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 8h6v5H7a3 3 0 01-3-3V8zm9 0h6v5h-3a3 3 0 01-3-3V8z" stroke="rgba(255,255,255,0.8)" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        </div>
+        <span>Quote Card</span>
+      </button>
+      <button class="template-card" data-tpl="announce">
+        <div class="template-preview tpl-announce">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 11h14M11 4v14" stroke="rgba(255,255,255,0.8)" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <span>Announcement</span>
+      </button>
+      <button class="template-card" data-tpl="birthday">
+        <div class="template-preview tpl-birthday">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M5 10h12v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8z" stroke="rgba(255,255,255,0.8)" stroke-width="1.4"/><path d="M3 10h16M8 10V8a3 3 0 016 0v2" stroke="rgba(255,255,255,0.8)" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </div>
+        <span>Birthday</span>
+      </button>
+    </div>
+    <button class="template-skip" id="template-skip">Skip for now</button>
+  </div>
+</div>
+
+<!-- Contextual selection hint (first-time only) -->
+<div id="select-hint" class="select-hint" aria-hidden="true">
+  Drag to move &nbsp;·&nbsp; Double-tap to edit text
 </div>
 
 <!-- Mobile backdrop (dims canvas when sheet is open) -->
@@ -795,7 +872,7 @@
         </button>
         <button class="ai-action-btn" id="ai-modal-download">
           <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7M4 5.5l2.5 2.5L9 5.5M1 9.5v1.5a1 1 0 001 1h9a1 1 0 001-1V9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Download
+          Save Image
         </button>
         <button class="ai-action-btn" id="ai-modal-share">
           <svg width="14" height="14" viewBox="0 0 15 15" fill="none"><circle cx="12" cy="3" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="3" cy="7.5" r="1.8" stroke="currentColor" stroke-width="1.3"/><path d="M10.3 3.8L4.7 6.7M4.7 8.3l5.6 2.9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -832,48 +909,19 @@
       </button>
     </div>
 
-    <!-- Copy image CTA -->
-    <div class="share-copy-section">
-      <button class="share-copy-btn" id="share-copy-img-btn">
-        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M10 3.5H5A1.5 1.5 0 003.5 5v7A1.5 1.5 0 005 13.5h7A1.5 1.5 0 0013.5 12V7M10 3.5l3.5 3.5M10 3.5V7h3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Copy image to clipboard
-      </button>
-    </div>
-
-    <!-- Divider -->
-    <div class="share-divider"><span>or share via</span></div>
-
     <!-- Platform grid -->
     <div class="share-platform-grid" id="share-platform-grid">
 
       <button class="share-platform-item" data-shr="download">
         <div class="share-platform-icon shr-neutral">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3v9M7 9l3 3 3-3M4 14v1.5A1.5 1.5 0 005.5 17h9a1.5 1.5 0 001.5-1.5V14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div><span>Download</span>
+        </div><span>Save Image</span>
       </button>
 
       <button class="share-platform-item" data-shr="native">
         <div class="share-platform-icon shr-neutral">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="15.5" cy="4.5" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="15.5" cy="15.5" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="4.5" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 10.8l6 3.1M13 6.1L7 9.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div><span>Share</span>
-      </button>
-
-      <button class="share-platform-item" data-shr="whatsapp">
-        <div class="share-platform-icon shr-whatsapp">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        </div><span>WhatsApp</span>
-      </button>
-
-      <button class="share-platform-item" data-shr="telegram">
-        <div class="share-platform-icon shr-telegram">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.4 13.992l-2.94-.918c-.64-.203-.654-.64.135-.954l11.57-4.461c.537-.194 1.006.131.73.562z"/></svg>
-        </div><span>Telegram</span>
-      </button>
-
-      <button class="share-platform-item" data-shr="email">
-        <div class="share-platform-icon shr-email">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2.5" stroke="white" stroke-width="1.8"/><path d="M2 7l10 7 10-7" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
-        </div><span>Email</span>
       </button>
 
     </div>
